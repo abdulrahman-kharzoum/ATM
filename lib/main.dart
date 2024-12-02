@@ -1,9 +1,11 @@
 import 'package:atm/routes/routes.dart';
 import 'package:flutter/material.dart';
-
+import '../core/shared/local_network.dart';
 import 'core/functions/statics.dart';
 
-void main() {
+void main() async {
+  await WidgetsFlutterBinding.ensureInitialized();
+  await CashNetwork.cashInitialization();
   runApp(
     const MyApp(),
   );
@@ -17,13 +19,12 @@ class MyApp extends StatelessWidget {
     final mediaQuery = MediaQuery.of(context).size;
     Statics.isPlatformDesktop = mediaQuery.width > 700;
     return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      title: 'ATM',
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
-      ),
-      initialRoute: '/',
-      routes: routes
-    );
+        debugShowCheckedModeBanner: false,
+        title: 'ATM',
+        theme: ThemeData(
+          primarySwatch: Colors.blue,
+        ),
+        initialRoute: '/',
+        routes: routes);
   }
 }

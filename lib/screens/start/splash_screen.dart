@@ -1,5 +1,7 @@
+import 'package:atm/cubits/splash_cubit/splash_cubit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../themes/color.dart';
 
@@ -10,40 +12,50 @@ class SplashScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     final mediaQuery = MediaQuery.of(context).size;
 
-Future.delayed(const Duration(seconds: 3), () {
-      Navigator.of(context).pushReplacementNamed('/login_screen');
-    });
-
-    return Scaffold(
-      backgroundColor: AppColors.darkBlue,
-      body: SizedBox(
-        height: mediaQuery.height,
-        width: mediaQuery.width,
-        child: Stack(
-          children: [
-            Opacity(
-              opacity: 0.05,
-              child: Image.asset(
-                'assets/images/background.jpg',
-                height: mediaQuery.height,
-                width: mediaQuery.width,
-                fit: BoxFit.cover,
-              ),
-            ),
-            // Logo Animation
-            Center(
-                child: Image.asset(
+    return BlocConsumer<SplashCubit, SplashState>(
+      listener: (context, state) {
+        if (state is SplashLoginState) {
+          Future.delayed(const Duration(seconds: 3), () {
+            Navigator.of(context).pushReplacementNamed('/login_screen');
+          });
+        }
+      },
+      builder: (context, state) {
+        return Scaffold(
+          backgroundColor: AppColors.darkBlue,
+          body: SizedBox(
+            height: mediaQuery.height,
+            width: mediaQuery.width,
+            child: Stack(
+              children: [
+                Opacity(
+                  opacity: 0.05,
+                  child: Image.asset(
+                    'assets/images/background.jpg',
+                    height: mediaQuery.height,
+                    width: mediaQuery.width,
+                    fit: BoxFit.cover,
+                  ),
+                ),
+                // Logo Animation
+                Center(
+                        child: Image.asset(
                   'assets/images/logo.png',
                   height: mediaQuery.height / 3,
                   fit: BoxFit.contain,
                   filterQuality: FilterQuality.medium,
                 ))
-                .animate()
-                .fade(duration: const Duration(milliseconds: 100))
-                .slideY(begin: 1, end: 0, duration: const Duration(milliseconds: 500)),
-          ],
-        ),
-      ),
+                    .animate()
+                    .fade(duration: const Duration(milliseconds: 100))
+                    .slideY(
+                        begin: 1,
+                        end: 0,
+                        duration: const Duration(milliseconds: 500)),
+              ],
+            ),
+          ),
+        );
+      },
     );
   }
 }

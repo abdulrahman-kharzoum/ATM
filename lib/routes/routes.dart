@@ -1,5 +1,6 @@
+import 'package:atm/cubits/register_cubit/register_cubit.dart';
 import 'package:atm/cubits/splash_cubit/splash_cubit.dart';
-import 'package:atm/screens/register_screen.dart';
+import 'package:atm/screens/register_screen/register_screen.dart';
 import 'package:atm/screens/start/splash_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -14,12 +15,17 @@ final Map<String, WidgetBuilder> routes = {
   //       create: (context) => SplashCubit()..checkInternetCounter,
   //       child: SplashScreen(),
   //     ),
-  '/': (context) => SplashScreen(),
-  '/login_screen': (context) =>
-      BlocProvider(
+  '/': (context) => BlocProvider(
+        create: (context) => SplashCubit()..initState(context: context),
+        child: SplashScreen(),
+      ),
+  '/login_screen': (context) => BlocProvider(
         create: (context) => LoginCubit(),
         child: LoginScreen(),
       ),
-  '/register_screen': (context) => const RegisterScreen(),
+  '/register_screen': (context) => BlocProvider(
+        create: (context) => RegisterCubit(),
+        child: const RegisterScreen(),
+      ),
   '/key_generation': (context) => const KeyGenerationScreen(),
 };

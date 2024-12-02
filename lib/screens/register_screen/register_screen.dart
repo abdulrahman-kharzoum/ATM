@@ -1,17 +1,14 @@
+import 'package:atm/cubits/register_cubit/register_cubit.dart';
+import 'package:atm/widgets/auth/register_mobile_widget%20copy.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../../core/dialogs.dart';
-import '../../core/functions/statics.dart';
 import '../../core/functions/validate_input.dart';
-import '../../cubits/auth/login/login_cubit.dart';
 import '../../themes/color.dart';
-import '../../widgets/auth/login_mobile_widget.dart';
-import '../../widgets/auth/login_web_widget.dart';
 
-class LoginScreen extends StatelessWidget {
-  LoginScreen({super.key});
+class RegisterScreen extends StatelessWidget {
+  const RegisterScreen({super.key});
 
   void _closeLoadingDialog(BuildContext context) {
     if (Navigator.of(context, rootNavigator: true).canPop()) {
@@ -23,21 +20,11 @@ class LoginScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     final mediaQuery = MediaQuery.of(context).size;
     final validator = Validate(context: context);
-    final loginCubit = context.read<LoginCubit>();
-    return BlocConsumer<LoginCubit, LoginState>(
-      listener: (context, state) {
-        if (state is LoginSuccess) {
-          _closeLoadingDialog(context);
-          Navigator.pushReplacementNamed(context, '/key_generation');
-        } else if (state is LoginFailure) {
-          _closeLoadingDialog(context);
-          errorDialog(context: context, text: state.errorMessage);
-        } else if (state is LoginLoading) {
-          loadingDialog(context: context, mediaQuery: mediaQuery);
-        }
-      },
+    final loginCubit = context.read<RegisterCubit>();
+    return BlocConsumer<RegisterCubit, RegisterState>(
+      listener: (context, state) {},
       builder: (context, state) {
-        bool showPassword = state is ShowPassword ? state.show : true;
+        bool showPassword = state is ShowRegisterPassword ? state.show : true;
         return Scaffold(
           backgroundColor: AppColors.dark,
           extendBodyBehindAppBar: true,
@@ -71,15 +58,10 @@ class LoginScreen extends StatelessWidget {
               SingleChildScrollView(
                 padding:
                     EdgeInsets.symmetric(horizontal: mediaQuery.height / 20),
-                child: Statics.isPlatformDesktop
-                    ? LoginWebWidget(
-                        loginCubit: loginCubit,
-                        validator: validator,
-                        showPassword: showPassword)
-                    : LoginMobileWidget(
-                        loginCubit: loginCubit,
-                        validator: validator,
-                        showPassword: showPassword),
+                child: RegisterMobileWidget(
+                    registerCubit: loginCubit,
+                    validator: validator,
+                    showPassword: showPassword),
               ).animate().fade(
                     duration: const Duration(milliseconds: 500),
                   ),

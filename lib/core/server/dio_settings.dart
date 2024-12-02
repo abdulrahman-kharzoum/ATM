@@ -2,7 +2,7 @@ import 'package:dio/dio.dart';
 
 Dio dio() {
   Dio dio = Dio();
-  dio.options.baseUrl = 'https://tasks.mosh-group.com/api/v1/';
+  dio.options.baseUrl = 'http://127.0.0.1:8000/api/';
   dio.options.headers['Accept'] = 'application/json';
   return dio;
 }

@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:fast_rsa/fast_rsa.dart';
-import 'dart:convert';
 
 class KeyGenerationScreen extends StatefulWidget {
   const KeyGenerationScreen({super.key});
@@ -61,14 +60,17 @@ class _KeyGenerationScreenState extends State<KeyGenerationScreen> {
               ),
               const SizedBox(height: 20),
               if (publicKey.isNotEmpty && privateKey.isNotEmpty) ...[
-                const Text('Public Key:', style: TextStyle(fontWeight: FontWeight.bold)),
+                const Text('Public Key:',
+                    style: TextStyle(fontWeight: FontWeight.bold)),
                 SelectableText(publicKey),
                 const SizedBox(height: 20),
-                const Text('Private Key:', style: TextStyle(fontWeight: FontWeight.bold)),
+                const Text('Private Key:',
+                    style: TextStyle(fontWeight: FontWeight.bold)),
                 SelectableText(privateKey),
                 const SizedBox(height: 20),
               ],
-              const Text('Enter message to encrypt:', style: TextStyle(fontWeight: FontWeight.bold)),
+              const Text('Enter message to encrypt:',
+                  style: TextStyle(fontWeight: FontWeight.bold)),
               TextField(
                 onChanged: (value) {
                   setState(() {
@@ -88,7 +90,8 @@ class _KeyGenerationScreenState extends State<KeyGenerationScreen> {
               ),
               const SizedBox(height: 20),
               if (encryptedMessage.isNotEmpty) ...[
-                const Text('Encrypted Message:', style: TextStyle(fontWeight: FontWeight.bold)),
+                const Text('Encrypted Message:',
+                    style: TextStyle(fontWeight: FontWeight.bold)),
                 SelectableText(encryptedMessage),
                 const SizedBox(height: 20),
               ],
@@ -98,7 +101,8 @@ class _KeyGenerationScreenState extends State<KeyGenerationScreen> {
               ),
               const SizedBox(height: 20),
               if (decryptedMessage.isNotEmpty) ...[
-                const Text('Decrypted Message:', style: TextStyle(fontWeight: FontWeight.bold)),
+                const Text('Decrypted Message:',
+                    style: TextStyle(fontWeight: FontWeight.bold)),
                 SelectableText(decryptedMessage),
               ],
             ],
