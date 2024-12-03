@@ -95,7 +95,7 @@ final token = await CashNetwork.getCashData(key: 'authToken');
 
     try {
       final response = await dio().put(
-        'users/${userId}/balance',
+        'users/$userId/balance',
         data: {
           'amount': amount,
           'operation': operation,
@@ -108,6 +108,7 @@ final token = await CashNetwork.getCashData(key: 'authToken');
       );
 
       if (response.statusCode == 200) {
+
         emit(TransactionPerformedState(message: response.data['message']));
       } else {
         emit(TransactionsFailedState(
@@ -120,30 +121,6 @@ final token = await CashNetwork.getCashData(key: 'authToken');
       emit(TransactionsFailedState(errorMessage: 'An error occurred: $e'));
     }
   }
-  Future<void> getBalance(int userId) async {
-    emit(BalanceLoadingState());
 
-    try {
-      final response = await dio().get(
-        'users/$userId',
-        options: Dio.Options(
-          headers: {'Authorization': 'Bearer '},
-        ),
-      );
-
-      if (response.statusCode == 200) {
-
-        final data = response.data;
-        final balance = data['balance'];
-          print("balance : $balance");
-        emit(TransactionBalanceFetchedState(balance: balance));
-      } else {
-
-        emit(TransactionsFailedState(errorMessage: 'Failed to fetch balance'));
-      }
-    } catch (e) {
-      emit(TransactionsFailedState(errorMessage: 'Error: $e'));
-    }
-  }
 }
 

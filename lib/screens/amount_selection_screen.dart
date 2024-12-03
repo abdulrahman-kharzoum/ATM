@@ -1,3 +1,4 @@
+import 'package:atm/cubits/balance_cubit/balance_cubit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -184,6 +185,15 @@ class AmountSelectionScreen extends StatelessWidget {
         operation: operation,
         amount: amount,
       );
+      if(context.mounted ){
+        await context.read<BalanceCubit>().updateBalance(
+          userId: 1,
+          operation: operation,
+          amount: amount,
+        );
+
+      }
+
 
       // // Show success message after transaction
       // ScaffoldMessenger.of(context).showSnackBar(

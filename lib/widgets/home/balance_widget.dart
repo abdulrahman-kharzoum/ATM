@@ -1,3 +1,4 @@
+import 'package:atm/cubits/balance_cubit/balance_cubit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -16,16 +17,16 @@ class _BalanceWidgetState extends State<BalanceWidget> {
     super.initState();
 
     final userId = 1;
-    context.read<TransactionsCubit>().getBalance(userId);
+    context.read<BalanceCubit>().getBalance(userId);
   }
 
   @override
   Widget build(BuildContext context) {
-    String bal = "100";
-    return BlocBuilder<TransactionsCubit, TransactionsState>(
+
+    return BlocBuilder<BalanceCubit, BalanceState>(
       builder: (context, state) {
-        if (state is TransactionBalanceFetchedState) {
-          bal = state.balance;
+        if (state is BalanceFetchedState ) {
+
           return Column(
             mainAxisSize: MainAxisSize.min,
             children: [
@@ -60,7 +61,46 @@ class _BalanceWidgetState extends State<BalanceWidget> {
               ),
             ],
           );
-        } else if (state is TransactionsFailedState) {
+        }
+        else if(state is BalanceUpdatedState){
+
+            return Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Text(
+                      '${state.balance} ',
+                      textAlign: TextAlign.center,
+                      style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                          color: Colors.white,
+                          fontSize: widget.mediaQuery.width / 7),
+                    ),
+                    Text(
+                      'SPY',
+                      textAlign: TextAlign.center,
+                      style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                          color: Colors.white,
+                          fontSize: widget.mediaQuery.width / 15),
+                    ),
+                  ],
+                ),
+                Text(
+                  'Your current balance',
+                  textAlign: TextAlign.center,
+                  style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                      color: Colors.white,
+                      fontSize: widget.mediaQuery.width / 25),
+                ),
+              ],
+            );
+
+        }
+        else if (state is BalanceFailedState) {
           return Center(
             child: Text(
               state.errorMessage,
@@ -72,40 +112,41 @@ class _BalanceWidgetState extends State<BalanceWidget> {
           return Center(child: CircularProgressIndicator()); // Loading state
         }
 
-        return Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Text(
-                  bal,
-                  textAlign: TextAlign.center,
-                  style: TextStyle(
-                      fontWeight: FontWeight.bold,
-                      color: Colors.white,
-                      fontSize: widget.mediaQuery.width / 7),
-                ),
-                Text(
-                  'SPY',
-                  textAlign: TextAlign.center,
-                  style: TextStyle(
-                      fontWeight: FontWeight.bold,
-                      color: Colors.white,
-                      fontSize: widget.mediaQuery.width / 15),
-                ),
-              ],
-            ),
-            Text(
-              'Your current balance',
-              textAlign: TextAlign.center,
-              style: TextStyle(
-                  fontWeight: FontWeight.bold,
-                  color: Colors.white,
-                  fontSize: widget.mediaQuery.width / 25),
-            ),
-          ],
-        );
+        // return Column(
+        //   mainAxisSize: MainAxisSize.min,
+        //   children: [
+        //     Row(
+        //       mainAxisAlignment: MainAxisAlignment.center,
+        //       children: [
+        //         Text(
+        //           bal,
+        //           textAlign: TextAlign.center,
+        //           style: TextStyle(
+        //               fontWeight: FontWeight.bold,
+        //               color: Colors.white,
+        //               fontSize: widget.mediaQuery.width / 7),
+        //         ),
+        //         Text(
+        //           'SPY',
+        //           textAlign: TextAlign.center,
+        //           style: TextStyle(
+        //               fontWeight: FontWeight.bold,
+        //               color: Colors.white,
+        //               fontSize: widget.mediaQuery.width / 15),
+        //         ),
+        //       ],
+        //     ),
+        //     Text(
+        //       'Your current balance',
+        //       textAlign: TextAlign.center,
+        //       style: TextStyle(
+        //           fontWeight: FontWeight.bold,
+        //           color: Colors.white,
+        //           fontSize: widget.mediaQuery.width / 25),
+        //     ),
+        //   ],
+        // );
+        return Container();
       },
     );
   }

@@ -78,8 +78,9 @@ class RegisterMobileWidget extends StatelessWidget {
               SizedBox(height: mediaQuery.height / 10),
               // Login Button
               SizedBox(
-                width: mediaQuery.width,
-                height: mediaQuery.height / 15,
+                width: mediaQuery.width/2 ,
+                height: 60,
+                // height: mediaQuery.height / 25,
                 child: BlocConsumer<RegisterCubit, RegisterState>(
                   listener: (context, state) {
                     if (state is RegisterLoadingState) {
@@ -101,7 +102,9 @@ class RegisterMobileWidget extends StatelessWidget {
                         }
                       },
                       style: ElevatedButton.styleFrom(
-                          backgroundColor: AppColors.primaryColor),
+                          backgroundColor: AppColors.primaryColor,
+                          // minimumSize: Size(mediaQuery.width /50, 100)
+                      ),
                       child: Text(
                         'Create Account',
                         style: TextStyle(
