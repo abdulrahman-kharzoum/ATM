@@ -7,6 +7,7 @@ import '../../cubits/auth/login/login_cubit.dart';
 import '../../themes/color.dart';
 import '../custom_text_fields/custom_text_field.dart';
 
+
 class LoginWebWidget extends StatelessWidget {
   const LoginWebWidget({
     super.key,
@@ -22,6 +23,7 @@ class LoginWebWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final mediaQuery = MediaQuery.of(context).size;
+
     return ConstrainedBox(
       constraints: BoxConstraints(
         minHeight: mediaQuery.height,
@@ -74,28 +76,26 @@ class LoginWebWidget extends StatelessWidget {
                           obscureText: showPassword,
                           keyboardType: TextInputType.text,
                           controller: loginCubit.passwordController,
-
                           icon: showPassword ? Icons.visibility_off : Icons.visibility,
                           colorIcon: Colors.grey,
                           hintText: '****',
-                          nameLabel: 'PIN',
+                          nameLabel: 'Password',
                           onPressedIcon: () {
                             BlocProvider.of<LoginCubit>(context).toggleShowPassword(!showPassword);
                           },
                           validator: validator.validatePassword,
                         ),
                       ),
-
                       SizedBox(height: mediaQuery.height / 40),
                       SizedBox(
                         width: mediaQuery.width / 3,
                         height: mediaQuery.height / 15,
                         child: ElevatedButton(
-                          onPressed: () {
+                          onPressed: () async {
                             if (loginCubit.formKey.currentState!.validate()) {
-                              Navigator.pushNamed(context, '/key_generation');
                               print(loginCubit.usernameController.text.toString());
                               print(loginCubit.passwordController.text.toString());
+                              await loginCubit.login(context: context);
                             }
                           },
                           child: Text(
@@ -142,4 +142,6 @@ class LoginWebWidget extends StatelessWidget {
       ),
     );
   }
+
+
 }

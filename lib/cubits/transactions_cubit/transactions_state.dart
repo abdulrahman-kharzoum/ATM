@@ -4,6 +4,12 @@ part of 'transactions_cubit.dart';
 sealed class TransactionsState {}
 
 final class TransactionsInitial extends TransactionsState {}
+final class TransactionLoadingState extends TransactionsState {}
+final class TransactionPerformedState extends TransactionsState {
+  final String message;
+
+  TransactionPerformedState({required this.message});
+}
 
 final class TransactionsSuccessState extends TransactionsState {
   final List<TransactionModel> transactions;
