@@ -8,8 +8,8 @@ import '../themes/color.dart';
 
 void loadingDialog(
     {required BuildContext context,
-      required Size mediaQuery,
-      String title = ''}) {
+    required Size mediaQuery,
+    String title = ''}) {
   showDialog(
     context: context,
     barrierDismissible: false,
@@ -95,13 +95,19 @@ void errorDialog({
   required String text,
 }) {
   const textStyle =
-  TextStyle(color: AppColors.primaryColor, fontWeight: FontWeight.w600);
+      TextStyle(color: AppColors.primaryColor, fontWeight: FontWeight.w600);
   showDialog(
     context: context,
     builder: (context) => AlertDialog(
       backgroundColor: AppColors.dark,
-      title: Text("Error"), // Replaced localized string
-      content: Text(text),
+      title: Text(
+        "Error",
+        style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
+      ), // Replaced localized string
+      content: Text(
+        text,
+        style: TextStyle(color: Colors.white),
+      ),
       actions: [
         TextButton(
           style: ButtonStyle(
@@ -121,8 +127,8 @@ void errorDialog({
 
 void infoDialog(
     {required BuildContext context,
-      required String text,
-      required void Function()? onConfirmBtnTap}) {
+    required String text,
+    required void Function()? onConfirmBtnTap}) {
   QuickAlert.show(
     context: context,
     type: QuickAlertType.info,

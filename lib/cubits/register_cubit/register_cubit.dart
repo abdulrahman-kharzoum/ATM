@@ -1,15 +1,12 @@
 import 'dart:convert';
-
 import 'package:atm/core/functions/encryption.dart';
 import 'package:atm/core/shared/local_network.dart';
 import 'package:bloc/bloc.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:meta/meta.dart';
-
 import '../../core/functions/apis_error_handler.dart';
 import '../../core/server/dio_settings.dart';
-
 part 'register_state.dart';
 
 class RegisterCubit extends Cubit<RegisterState> {
@@ -54,12 +51,10 @@ class RegisterCubit extends Cubit<RegisterState> {
         encryptedData: response.data['encryptedData'],
       );
       print('The decrypted data is => $decryptedData');
-
       Navigator.pop(context);
     } on DioException catch (e) {
       Navigator.pop(context);
       errorHandler(e: e, context: context);
-
       print(
           'The failed status code is ${e.response!.statusCode}\n${e.response!.data}');
       emit(RegisterFailedState(errorMessage: e.response!.data['errors'][0]));
