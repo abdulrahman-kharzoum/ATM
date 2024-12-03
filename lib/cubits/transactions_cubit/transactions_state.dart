@@ -4,7 +4,17 @@ part of 'transactions_cubit.dart';
 sealed class TransactionsState {}
 
 final class TransactionsInitial extends TransactionsState {}
+final class TransactionLoadingState extends TransactionsState {}
+final class TransactionPerformedState extends TransactionsState {
+  final String message;
 
+  TransactionPerformedState({required this.message});
+}
+class TransactionBalanceFetchedState extends TransactionsState {
+  final String balance;
+
+  TransactionBalanceFetchedState({required this.balance});
+}
 final class TransactionsSuccessState extends TransactionsState {
   final List<TransactionModel> transactions;
   final bool isReachMax;

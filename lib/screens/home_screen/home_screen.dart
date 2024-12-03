@@ -4,6 +4,7 @@ import 'package:atm/widgets/home/page_transactions_widget.dart';
 import 'package:flutter/material.dart';
 
 import '../../themes/color.dart';
+import '../../widgets/home/DepositWithdrawal_widget.dart';
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});
@@ -67,6 +68,10 @@ class HomeScreen extends StatelessWidget {
                     height: mediaQuery.height / 10,
                   ),
                   BalanceWidget(mediaQuery: mediaQuery),
+                  SizedBox(
+                    height: mediaQuery.height / 70,
+                  ),
+                  DepositWithdrawalRow(userId: 1,),
                   SizedBox(
                     height: mediaQuery.height / 70,
                   ),

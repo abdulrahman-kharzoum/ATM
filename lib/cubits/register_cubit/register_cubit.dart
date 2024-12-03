@@ -51,6 +51,20 @@ class RegisterCubit extends Cubit<RegisterState> {
         encryptedData: response.data['encryptedData'],
       );
       print('The decrypted data is => $decryptedData');
+
+      // Decode
+      final decodedData = json.decode(decryptedData);
+      print('Decoded JSON data: $decodedData');
+
+      final token = decodedData['data']?['token'];
+      if (token != null) {
+
+        await CashNetwork.insertToCash(key: 'authToken', value: token);
+        print('Token saved: $token');
+      } else {
+        print('Token is missing in the response');
+      }
+
       Navigator.pop(context);
     } on DioException catch (e) {
       Navigator.pop(context);

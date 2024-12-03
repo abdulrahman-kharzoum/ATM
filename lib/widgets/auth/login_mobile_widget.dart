@@ -57,9 +57,10 @@ class LoginMobileWidget extends StatelessWidget {
                 icon: showPassword ? Icons.visibility_off : Icons.visibility,
                 colorIcon: Colors.grey,
                 hintText: '****',
-                nameLabel: 'PIN',
+                nameLabel: 'Password',
                 onPressedIcon: () {
-                  BlocProvider.of<LoginCubit>(context).toggleShowPassword(!showPassword);
+                  BlocProvider.of<LoginCubit>(context)
+                      .toggleShowPassword(!showPassword);
                 },
                 validator: validator.validatePassword,
               ),
@@ -70,9 +71,9 @@ class LoginMobileWidget extends StatelessWidget {
                 width: mediaQuery.width,
                 height: mediaQuery.height / 15,
                 child: ElevatedButton(
-                  onPressed: () {
+                  onPressed: () async {
                     if (loginCubit.formKey.currentState!.validate()) {
-                      Navigator.pushNamed(context, '/key_generation');
+                      await loginCubit.login(context: context);
                       print(loginCubit.usernameController.text.toString());
                       print(loginCubit.passwordController.text.toString());
                     }

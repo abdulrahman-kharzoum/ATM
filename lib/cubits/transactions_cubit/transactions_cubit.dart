@@ -1,3 +1,4 @@
+import 'package:atm/core/shared/local_network.dart';
 import 'package:atm/models/transaction_model.dart';
 import 'package:bloc/bloc.dart';
 import 'package:dio/dio.dart';
@@ -71,4 +72,78 @@ class TransactionsCubit extends Cubit<TransactionsState> {
       print(e);
     }
   }
+
+
+  Future<void> performTransaction({
+    required int userId,
+    required String operation,
+    required int amount,
+  }) async {
+    if (amount <= 0) {
+      emit(TransactionsFailedState(errorMessage: "Amount must be greater than 0"));
+      return;
+    }
+final token = await CashNetwork.getCashData(key: 'authToken');
+    if (operation != 'add' && operation != 'subtract') {
+      emit(TransactionsFailedState(
+          errorMessage: "Operation must be 'add' or 'subtract'"));
+      return;
+    }
+
+
+    emit(TransactionLoadingState());
+
+    try {
+      final response = await dio().put(
+        'users/${userId}/balance',
+        data: {
+          'amount': amount,
+          'operation': operation,
+        },
+        options: Options(
+          headers: {
+            'Authorization': 'Bearer $token',
+          },
+        ),
+      );
+
+      if (response.statusCode == 200) {
+        emit(TransactionPerformedState(message: response.data['message']));
+      } else {
+        emit(TransactionsFailedState(
+            errorMessage: response.data['error'] ?? 'Unexpected error occurred'));
+      }
+    } on DioException catch (e) {
+      emit(TransactionsFailedState(
+          errorMessage: e.response?.data['message'] ?? 'Network error occurred'));
+    } catch (e) {
+      emit(TransactionsFailedState(errorMessage: 'An error occurred: $e'));
+    }
+  }
+  Future<void> getBalance(int userId) async {
+    emit(TransactionLoadingState());
+
+    try {
+      final response = await dio().get(
+        'users/$userId',
+        options: Dio.Options(
+          headers: {'Authorization': 'Bearer '},
+        ),
+      );
+
+      if (response.statusCode == 200) {
+
+        final data = response.data;
+        final balance = data['balance'];
+
+        emit(TransactionBalanceFetchedState(balance: balance));
+      } else {
+
+        emit(TransactionsFailedState(errorMessage: 'Failed to fetch balance'));
+      }
+    } catch (e) {
+      emit(TransactionsFailedState(errorMessage: 'Error: $e'));
+    }
+  }
 }
+

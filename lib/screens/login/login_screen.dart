@@ -1,3 +1,5 @@
+
+
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -10,6 +12,7 @@ import '../../themes/color.dart';
 import '../../widgets/auth/login_mobile_widget.dart';
 import '../../widgets/auth/login_web_widget.dart';
 
+
 class LoginScreen extends StatelessWidget {
   LoginScreen({super.key});
 
@@ -18,7 +21,6 @@ class LoginScreen extends StatelessWidget {
       Navigator.of(context, rootNavigator: true).pop();
     }
   }
-
   @override
   Widget build(BuildContext context) {
     final mediaQuery = MediaQuery.of(context).size;
@@ -28,7 +30,7 @@ class LoginScreen extends StatelessWidget {
       listener: (context, state) {
         if (state is LoginSuccess) {
           _closeLoadingDialog(context);
-          Navigator.pushReplacementNamed(context, '/key_generation');
+          Navigator.pushReplacementNamed(context, '/home_screen');
         } else if (state is LoginFailure) {
           _closeLoadingDialog(context);
           errorDialog(context: context, text: state.errorMessage);
@@ -70,19 +72,19 @@ class LoginScreen extends StatelessWidget {
               ),
               SingleChildScrollView(
                 padding:
-                    EdgeInsets.symmetric(horizontal: mediaQuery.height / 20),
+                EdgeInsets.symmetric(horizontal: mediaQuery.height / 20),
                 child: Statics.isPlatformDesktop
                     ? LoginWebWidget(
-                        loginCubit: loginCubit,
-                        validator: validator,
-                        showPassword: showPassword)
+                    loginCubit: loginCubit,
+                    validator: validator,
+                    showPassword: showPassword)
                     : LoginMobileWidget(
-                        loginCubit: loginCubit,
-                        validator: validator,
-                        showPassword: showPassword),
+                    loginCubit: loginCubit,
+                    validator: validator,
+                    showPassword: showPassword),
               ).animate().fade(
-                    duration: const Duration(milliseconds: 500),
-                  ),
+                duration: const Duration(milliseconds: 500),
+              ),
             ],
           ),
         );
