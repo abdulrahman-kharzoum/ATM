@@ -20,17 +20,17 @@ class SplashScreen extends StatelessWidget {
           Future.delayed(
             const Duration(seconds: 3),
             () {
-              // Navigator.of(context).pushReplacementNamed('/login_screen');
-              Navigator.of(context).pushAndRemoveUntil(
-                MaterialPageRoute(
-                  builder: (context) => BlocProvider(
-                    create: (context) => TransactionsCubit()
-                      ..initState(context: context, userId: 1),
-                    child: HomeScreen(),
-                  ),
-                ),
-                (route) => true,
-              );
+              Navigator.of(context).pushReplacementNamed('/login_screen');
+              // Navigator.of(context).pushAndRemoveUntil(
+              //   MaterialPageRoute(
+              //     builder: (context) => BlocProvider(
+              //       create: (context) => TransactionsCubit()
+              //         ..initState(context: context, userId: 1),
+              //       child: HomeScreen(),
+              //     ),
+              //   ),
+              //   (route) => true,
+              // );
             },
           );
         }
