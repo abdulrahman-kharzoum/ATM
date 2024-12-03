@@ -142,12 +142,71 @@ class AmountSelectionScreen extends StatelessWidget {
   }
 
   void _performTransaction(BuildContext context, int amount) {
-    // Perform the transaction based on the amount and operation (deposit/withdraw)
-    context.read<TransactionsCubit>().performTransaction(
-      userId: 1, // Pass the user ID if needed
-      operation: operation,
-      amount: amount,
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          backgroundColor: Color(0xFF101727), // Same as the page background color
+          title: Text(
+            operation == 'add' ? 'Confirm Deposit' : 'Confirm Withdrawal',
+            style: TextStyle(color: Colors.white),
+          ),
+          content: Text(
+            'Are you sure you want to ${operation == 'add' ? 'deposit' : 'withdraw'} $amount SYP?',
+            style: TextStyle(color: Colors.white),
+          ),
+          actions: [
+            TextButton(
+              onPressed: () {
+                Navigator.pop(context); // Close the dialog
+              },
+              child: Text('Cancel', style: TextStyle(color: Colors.white)),
+            ),
+            TextButton(
+              onPressed: () {
+                // Perform the transaction if confirmed
+                _executeTransaction(context, amount);
+                Navigator.pop(context); // Close the dialog
+              },
+              child: Text(operation == 'add' ? 'Deposit' : 'Withdraw', style: TextStyle(color: Colors.white)),
+            ),
+          ],
+        );
+      },
     );
+  }
+
+  void _executeTransaction(BuildContext context, int amount) async {
+
+    try {
+      await context.read<TransactionsCubit>().performTransaction(
+        userId: 1,
+        operation: operation,
+        amount: amount,
+      );
+
+      // // Show success message after transaction
+      // ScaffoldMessenger.of(context).showSnackBar(
+      //   SnackBar(
+      //     content: Text(
+      //       operation == 'add' ? 'Deposit successful!' : 'Withdrawal successful!',
+      //       style: TextStyle(color: Colors.white),
+      //     ),
+      //     backgroundColor: Colors.green,
+      //   ),
+      // );
+    } catch (e) {
+      // Show failure message in case of an error
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text(
+            'Transaction failed: $e',
+            style: TextStyle(color: Colors.white),
+          ),
+          backgroundColor: Colors.red,
+        ),
+      );
+    }
   }
 
   void _showCustomAmountDialog(BuildContext context) {

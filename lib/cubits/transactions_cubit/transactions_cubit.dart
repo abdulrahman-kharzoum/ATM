@@ -121,7 +121,7 @@ final token = await CashNetwork.getCashData(key: 'authToken');
     }
   }
   Future<void> getBalance(int userId) async {
-    emit(TransactionLoadingState());
+    emit(BalanceLoadingState());
 
     try {
       final response = await dio().get(
@@ -135,7 +135,7 @@ final token = await CashNetwork.getCashData(key: 'authToken');
 
         final data = response.data;
         final balance = data['balance'];
-
+          print("balance : $balance");
         emit(TransactionBalanceFetchedState(balance: balance));
       } else {
 

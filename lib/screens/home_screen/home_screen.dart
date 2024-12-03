@@ -2,7 +2,9 @@ import 'package:atm/core/shared/local_network.dart';
 import 'package:atm/widgets/home/balance_widget.dart';
 import 'package:atm/widgets/home/page_transactions_widget.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
+import '../../cubits/transactions_cubit/transactions_cubit.dart';
 import '../../themes/color.dart';
 import '../../widgets/home/DepositWithdrawal_widget.dart';
 
@@ -24,7 +26,7 @@ class HomeScreen extends StatelessWidget {
               await CashNetwork.clearCash();
               Navigator.of(context).pushNamedAndRemoveUntil(
                 '/login_screen',
-                (route) => true,
+                    (route) => true,
               );
             },
             icon: Icon(
@@ -67,18 +69,18 @@ class HomeScreen extends StatelessWidget {
                   SizedBox(
                     height: mediaQuery.height / 10,
                   ),
-                  BalanceWidget(mediaQuery: mediaQuery),
+                  BalanceWidget(mediaQuery: MediaQuery.of(context).size),
                   SizedBox(
                     height: mediaQuery.height / 70,
                   ),
-                  DepositWithdrawalRow(userId: 1,),
+                  DepositWithdrawalRow(userId: 1),
                   SizedBox(
                     height: mediaQuery.height / 70,
                   ),
                   PageTransactionsWidget(),
                 ],
               ),
-            )
+            ),
           ],
         ),
       ),

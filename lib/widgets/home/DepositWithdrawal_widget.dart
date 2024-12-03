@@ -2,10 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../cubits/transactions_cubit/transactions_cubit.dart';
 import '../../screens/amount_selection_screen.dart';
+
 class DepositWithdrawalRow extends StatelessWidget {
   final int userId;
 
-  const DepositWithdrawalRow({Key? key, required this.userId}) : super(key: key);
+  const DepositWithdrawalRow({Key? key, required this.userId})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -35,14 +37,41 @@ class DepositWithdrawalRow extends StatelessWidget {
               onTap: isLoading
                   ? null
                   : () {
-                // Navigate to the amount selection screen for deposit
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => AmountSelectionScreen(operation: 'add'),
-                  ),
-                );
-              },
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => BlocListener<TransactionsCubit,
+                                  TransactionsState>(
+                              listener: (context, state) {
+                                if (state is TransactionPerformedState) {
+
+                                  ScaffoldMessenger.of(context).showSnackBar(
+                                    SnackBar(
+                                      content: Text(
+                                        state.message,
+
+                                        style: TextStyle(color: Colors.white),
+                                      ),
+                                      backgroundColor: Colors.green,
+                                    ),
+                                  );
+                                } else if (state is TransactionsFailedState) {
+
+                                  ScaffoldMessenger.of(context).showSnackBar(
+                                    SnackBar(
+                                      content: Text(
+                                        state.errorMessage,
+                                        style: TextStyle(color: Colors.white),
+                                      ),
+                                      backgroundColor: Colors.red,
+                                    ),
+                                  );
+                                }
+                              },
+                              child: AmountSelectionScreen(operation: 'add')),
+                        ),
+                      );
+                    },
             ),
             TButton(
               label: 'Withdrawal',
@@ -52,14 +81,39 @@ class DepositWithdrawalRow extends StatelessWidget {
               onTap: isLoading
                   ? null
                   : () {
-                // Navigate to the amount selection screen for withdrawal
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => AmountSelectionScreen(operation: 'subtract'),
-                  ),
-                );
-              },
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => BlocListener<TransactionsCubit,
+                              TransactionsState>(
+                            listener: (context, state) {
+                              if (state is TransactionPerformedState) {
+                                ScaffoldMessenger.of(context).showSnackBar(
+                                  SnackBar(
+                                    content: Text(
+                                      state.message,
+                                      style: TextStyle(color: Colors.white),
+                                    ),
+                                    backgroundColor: Colors.green,
+                                  ),
+                                );
+                              } else if (state is TransactionsFailedState) {
+                                ScaffoldMessenger.of(context).showSnackBar(
+                                  SnackBar(
+                                    content: Text(
+                                      state.errorMessage,
+                                      style: TextStyle(color: Colors.white),
+                                    ),
+                                    backgroundColor: Colors.red,
+                                  ),
+                                );
+                              }
+                            },
+                            child: AmountSelectionScreen(operation: 'subtract'),
+                          ),
+                        ),
+                      );
+                    },
             ),
           ],
         );

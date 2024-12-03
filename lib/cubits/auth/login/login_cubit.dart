@@ -74,7 +74,6 @@ class LoginCubit extends Cubit<LoginState> {
             '--------------------- status code is ${response.statusCode}\n ${response.data}');
         if (response.statusCode == 200) {
           print(response);
-          await Encryption().decryptMessage2();
           final decryptedData = await Encryption().decryptMessage(
             encryptedData: response.data['encryptedData'],
           );

@@ -5,6 +5,7 @@ sealed class TransactionsState {}
 
 final class TransactionsInitial extends TransactionsState {}
 final class TransactionLoadingState extends TransactionsState {}
+final class BalanceLoadingState extends TransactionsState {}
 final class TransactionPerformedState extends TransactionsState {
   final String message;
 
